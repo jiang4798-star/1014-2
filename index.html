@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECHOES OF SILENCE | 攝影與視覺藝術作品集 Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            50: '#f8f8f8',
+                            100: '#eef0f2',
+                            200: '#d8dce2',
+                            800: '#1e232a',
+                            900: '#121519',
+                            950: '#0a0c0e',
+                        },
+                        accent: {
+                            amber: '#d97706',
+                            emerald: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                        serif: ['Playfair Display', 'Noto Serif TC', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom Keyframe Animations matching prompt requirements */
+        @keyframes heroScale {
+            0% { transform: scale(1.12); opacity: 0; }
+            100% { transform: scale(1); opacity: 0.85; }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .animate-hero-img {
+            animation: heroScale 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-up {
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-nav-in {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        /* Scroll Reveal Animation Styles */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gallery Grid Transitions & Hover Effects */
+        .gallery-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gallery-card .img-zoom {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+        }
+        .gallery-card:hover .img-zoom {
+            transform: scale(1.08) rotate(0.5deg);
+        }
+        .gallery-card .overlay-text {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(15px);
+            opacity: 0;
+        }
+        .gallery-card:hover .overlay-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Category Filter Item Animation */
+        .gallery-item-anim {
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .gallery-item-anim.filter-hide {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            pointer-events: none;
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0c0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a3038;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a525d;
+        }
+    </style>
+</head>
+<body class="bg-studio-950 text-slate-200 font-sans selection:bg-amber-600 selection:text-white antialiased overflow-x-hidden">
+
+    <!-- Navigation Header -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-studio-950/80 backdrop-blur-md border-b border-white/5 transition-all duration-300 animate-nav-in">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="group flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-xs font-serif italic tracking-widest text-amber-500 group-hover:border-amber-500 group-hover:scale-110 transition-all">
+                    E
+                </div>
+                <div>
+                    <span class="font-serif text-lg tracking-wider block text-white group-hover:text-amber-400 transition-colors">ECHOES</span>
+                    <span class="text-[9px] tracking-widest text-slate-400 uppercase font-light">Photography & Visual Art</span>
+                </div>
+            </a>
+
+            <!-- Desktop Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs tracking-widest font-medium uppercase text-slate-300">
+                <a href="#gallery" class="hover:text-amber-400 transition-colors hover:-translate-y-0.5 transform inline-block">Works / 作品集</a>
+                <a href="#exhibition" class="hover:text-amber-400 transition-colors hover:-translate-y-0.5 transform inline-block">Exhibition / 專題</a>
+                <a href="#about" class="hover:text-amber-400 transition-colors hover:-translate-y-0.5 transform inline-block">About / 關於我</a>
+                <a href="#contact" class="hover:text-amber-400 transition-colors hover:-translate-y-0.5 transform inline-block">Contact / 聯絡</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleFullscreenMode()" class="px-3.5 py-1.5 rounded-full border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:border-amber-500/50 hover:bg-white/5 transition-all flex items-center gap-2">
+                    <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-500"></i>
+                    <span class="hidden sm:inline">沉浸全螢幕</span>
+                </button>
+                <button id="menu-toggle" onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-studio-900 border-b border-white/10 px-6 py-6 space-y-4 text-sm uppercase tracking-widest text-slate-300">
+            <a href="#gallery" onclick="toggleMobileMenu()" class="block hover:text-amber-400">Works / 作品集</a>
+            <a href="#exhibition" onclick="toggleMobileMenu()" class="block hover:text-amber-400">Exhibition / 專題</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block hover:text-amber-400">About / 關於我</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block hover:text-amber-400">Contact / 聯絡</a>
+        </div>
+    </header>
+
+    <main class="relative">
+
+        <!-- Hero Section with Motion Animations -->
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+            <!-- Background Artwork with Scale 1.1 -> 1 animation -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=2000&q=80" 
+                     alt="Hero Visual Artwork" 
+                     class="w-full h-full object-cover animate-hero-img filter brightness-75 contrast-110"
+                     onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/121519/ffffff?text=Echoes+Visual+Art';" />
+                <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/40 to-transparent"></div>
+            </div>
+
+            <!-- Content Overlay -->
+            <div class="relative z-10 max-w-5xl mx-auto px-6 text-center space-y-6 pt-12">
+                <div class="animate-fade-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs tracking-widest text-amber-300 uppercase">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    2026 Visual Arts Portfolio
+                </div>
+
+                <h1 class="animate-fade-up font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-none" style="animation-delay: 200ms;">
+                    CAPTURING THE <br/>
+                    <span class="italic font-light text-slate-300">UNSEEN SILENCE</span>
+                </h1>
+
+                <p class="animate-fade-up text-sm sm:text-base md:text-lg text-slate-300 max-w-xl mx-auto font-light leading-relaxed tracking-wide" style="animation-delay: 400ms;">
+                    透過光影凝結時間的痕跡。讓使用者像瀏覽當代攝影展一樣，細細品味每張作品背後的故事與詩意。
+                </p>
+
+                <div class="animate-fade-up pt-6 flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay: 600ms;">
+                    <a href="#gallery" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs tracking-widest uppercase transition-all shadow-xl shadow-amber-900/30 flex items-center justify-center gap-2 group">
+                        觀賞作品藝廊 <i data-lucide="arrow-down-right" class="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:translate-y-1"></i>
+                    </a>
+                    <a href="#about" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 text-white text-xs tracking-widest uppercase transition-all backdrop-blur-sm">
+                        藝術家理念
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Down Indicator -->
+            <a href="#gallery" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 hover:text-white transition-colors animate-bounce">
+                <span class="text-[10px] tracking-widest uppercase font-light">Scroll Down</span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </a>
+        </section>
+
+        <!-- Works / Gallery Section -->
+        <section id="gallery" class="py-32 bg-studio-950 relative border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-6">
+                
+                <!-- Section Header -->
+                <div class="reveal flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+                    <div>
+                        <span class="text-xs text-amber-500 font-medium tracking-widest uppercase block mb-2">Curated Works</span>
+                        <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">藝廊作品展示</h2>
+                    </div>
+
+                    <!-- Category Filter Interaction Buttons -->
+                    <div class="flex flex-wrap gap-2 text-xs font-medium uppercase tracking-wider" id="filter-container">
+                        <button onclick="filterGallery('all')" class="filter-btn px-5 py-2.5 rounded-full bg-amber-600 text-white shadow-md transition-all">ALL / 全部</button>
+                        <button onclick="filterGallery('portrait')" class="filter-btn px-5 py-2.5 rounded-full bg-white/5 text-slate-400 border border-white/10 hover:text-white hover:border-amber-500/50 transition-all">PORTRAIT / 人像</button>
+                        <button onclick="filterGallery('landscape')" class="filter-btn px-5 py-2.5 rounded-full bg-white/5 text-slate-400 border border-white/10 hover:text-white hover:border-amber-500/50 transition-all">LANDSCAPE / 風景</button>
+                        <button onclick="filterGallery('commercial')" class="filter-btn px-5 py-2.5 rounded-full bg-white/5 text-slate-400 border border-white/10 hover:text-white hover:border-amber-500/50 transition-all">COMMERCIAL / 商業</button>
+                        <button onclick="filterGallery('street')" class="filter-btn px-5 py-2.5 rounded-full bg-white/5 text-slate-400 border border-white/10 hover:text-white hover:border-amber-500/50 transition-all">STREET / 街拍</button>
+                    </div>
+                </div>
+
+                <!-- Gallery Grid Container (9 Artworks minimum as required) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid">
+                    
+                    <!-- Item 1 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="portrait" 
+                         onclick="openLightbox(0)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Shattered Identity" 
+                                 class="img-zoom w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Portrait / 2025</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Shattered Identity / 凝視深淵</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">捕捉都市個體在繁華喧囂中的孤寂光影與眼神對白。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="landscape" 
+                         onclick="openLightbox(1)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Whispering Valley" 
+                                 class="img-zoom w-full h-full object-cover filter contrast-110" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Landscape / 2026</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Whispering Valley / 靜謐山谷</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">高山晨霧中的自然氣息，記錄光線在稜線上的微妙推移。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="commercial" 
+                         onclick="openLightbox(2)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Neon Minimalist" 
+                                 class="img-zoom w-full h-full object-cover filter brightness-90" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Commercial / 2025</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Neon Minimalist / 極簡霓虹</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">國際時裝品牌形象大片，結合幾何建築與前衛視覺色彩。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="street" 
+                         onclick="openLightbox(3)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Midnight Solitude" 
+                                 class="img-zoom w-full h-full object-cover filter contrast-125" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Street / 2026</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Midnight Solitude / 深夜街頭</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">夜幕低垂下的城市角落，記錄過客在街燈下的偶然停頓。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="portrait" 
+                         onclick="openLightbox(4)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Ethereal Reflection" 
+                                 class="img-zoom w-full h-full object-cover" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Portrait / 2026</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Ethereal Reflection / 虛實倒影</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">利用玻璃折射與自然環境光，營造夢境般的人像層次。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="landscape" 
+                         onclick="openLightbox(5)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1511497584788-876761c11969?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Mist & Pine" 
+                                 class="img-zoom w-full h-full object-cover" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Landscape / 2025</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Mist & Pine / 霧松深林</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">走進冷溫帶高山針葉林，記錄水氣與樹幹間的水墨質感。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 7 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="commercial" 
+                         onclick="openLightbox(6)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Urban Elegance" 
+                                 class="img-zoom w-full h-full object-cover" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Commercial / 2026</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Urban Elegance / 都市典雅</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">秋冬高級高級訂製服宣傳輯，強調材質與流線美學。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 8 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="street" 
+                         onclick="openLightbox(7)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Neon Horizon" 
+                                 class="img-zoom w-full h-full object-cover" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Street / 2025</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Neon Horizon / 霓虹地平線</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">雨後賽博朋克氛圍的都市巷弄，反射著五彩斑斕的光影。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 9 -->
+                    <div class="gallery-card gallery-item-anim reveal relative group rounded-2xl overflow-hidden bg-studio-900 border border-white/10 cursor-pointer" 
+                         data-category="portrait" 
+                         onclick="openLightbox(8)">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Golden Hour Serenade" 
+                                 class="img-zoom w-full h-full object-cover" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-studio-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="overlay-text absolute bottom-0 left-0 right-0 p-6 space-y-2">
+                            <span class="text-[10px] tracking-widest text-amber-400 uppercase font-medium">Portrait / 2026</span>
+                            <h3 class="font-serif text-xl text-white font-medium">Golden Hour Serenade / 黃昏小夜曲</h3>
+                            <p class="text-xs text-slate-400 font-light line-clamp-2">夕陽餘暉灑落於肌理上，凝固溫暖而柔和的當下情緒。</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Featured Exhibition / Projects Section -->
+        <section id="exhibition" class="py-32 bg-studio-900 relative">
+            <div class="max-w-7xl mx-auto px-6">
+                
+                <div class="reveal max-w-2xl mb-16">
+                    <span class="text-xs text-amber-500 font-medium tracking-widest uppercase block mb-2">Exhibition & Special Feature</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal leading-tight">年度個展專題《光之絮語》</h2>
+                    <p class="text-slate-400 text-sm mt-4 font-light leading-relaxed">
+                        探索攝影師過去三年間於冰島、日本與台灣高山的長達 1,000 天巡迴紀錄，展現當代視覺與自然靈性的對話。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Hero Featured Image -->
+                    <div class="lg:col-span-7 reveal relative rounded-3xl overflow-hidden border border-white/10 group cursor-pointer" onclick="openProjectDetail()">
+                        <div class="aspect-[16/10] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" 
+                                 alt="Featured Exhibition" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-studio-950 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-8 left-8 right-8 flex items-end justify-between">
+                            <div>
+                                <span class="text-xs font-mono text-amber-400 uppercase tracking-widest">Solo Exhibition 2026</span>
+                                <h3 class="font-serif text-2xl sm:text-3xl text-white mt-1">SOLITUDE & ECHOES</h3>
+                            </div>
+                            <span class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-amber-600 transition-colors">
+                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right Narrative & Stats -->
+                    <div class="lg:col-span-5 space-y-8 reveal">
+                        <div class="space-y-4 text-slate-300 font-light text-sm leading-relaxed">
+                            <p>
+                                「光線不是被記錄的標的，而是時間本身的呼吸。」本次展覽透過大片幅相機與黑白銀鹽沖印，探討人類文明與荒野邊界的微妙關係。
+                            </p>
+                            <p>
+                                展場特別搭配沉浸式音效與多媒體裝置，讓觀者宛如親臨零下二十度的極北之地。
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6 pt-4 border-t border-white/10">
+                            <div>
+                                <span class="font-serif text-3xl text-amber-400 block">42+</span>
+                                <span class="text-xs text-slate-400 uppercase tracking-wider mt-1 block">展出原創作品</span>
+                            </div>
+                            <div>
+                                <span class="font-serif text-3xl text-amber-400 block">3</span>
+                                <span class="text-xs text-slate-400 uppercase tracking-wider mt-1 block">巡迴展覽城市</span>
+                            </div>
+                        </div>
+
+                        <button onclick="openProjectDetail()" class="w-full py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 text-white font-medium text-xs tracking-widest uppercase transition-all flex items-center justify-center gap-2">
+                            查看專案完整細節 (Project Detail) <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-32 bg-studio-950 relative border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                    
+                    <!-- Portrait Image -->
+                    <div class="lg:col-span-5 reveal relative">
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative group">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Artist Portrait" 
+                                 class="w-full h-full object-cover filter grayscale contrast-125 group-hover:scale-105 transition-transform duration-700" />
+                        </div>
+                    </div>
+
+                    <!-- Bio Content -->
+                    <div class="lg:col-span-7 space-y-8 reveal">
+                        <div>
+                            <span class="text-xs text-amber-500 font-medium tracking-widest uppercase block mb-2">About The Artist</span>
+                            <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">Alex Chen / 陳墨</h2>
+                            <p class="text-slate-400 text-xs tracking-widest uppercase mt-2">Visual Artist & Landscape Photographer based in Taipei</p>
+                        </div>
+
+                        <div class="space-y-4 text-slate-300 font-light text-sm sm:text-base leading-relaxed">
+                            <p>
+                                擁有超過十年的視覺創作與商業攝影經驗。作品曾刊登於《國家地理雜誌》、《Vogue Visual》等知名國際媒體，並於東京、巴黎與台北舉辦過多次個人展覽。
+                            </p>
+                            <p>
+                                「攝影對我而言，是一種向內探尋與大自然的無聲對話。我不追求過度雕琢的畫面，而是關注光影在特定時刻所爆發出的生命力。」
+                            </p>
+                        </div>
+
+                        <!-- Awards & Recognition Accordion -->
+                        <div class="space-y-3 pt-4 border-t border-white/10">
+                            <h4 class="text-xs font-medium text-slate-200 uppercase tracking-widest mb-3">Honors & Awards 獲獎記錄</h4>
+                            <div class="flex justify-between text-xs py-2 border-b border-white/5">
+                                <span class="text-white">International Photography Awards (IPA) - Gold</span>
+                                <span class="text-amber-500 font-mono">2025</span>
+                            </div>
+                            <div class="flex justify-between text-xs py-2 border-b border-white/5">
+                                <span class="text-white">Prix de la Photographie Paris (PX3) - Winner</span>
+                                <span class="text-amber-500 font-mono">2024</span>
+                            </div>
+                            <div class="flex justify-between text-xs py-2 border-b border-white/5">
+                                <span class="text-white">Tokyo International Foto Awards - Fine Art Category</span>
+                                <span class="text-amber-500 font-mono">2023</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-32 bg-studio-900 relative border-t border-white/5">
+            <div class="max-w-4xl mx-auto px-6 text-center space-y-8 reveal">
+                <span class="text-xs text-amber-500 font-medium tracking-widest uppercase block">Get In Touch</span>
+                <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">開始一場關於光影的合作</h2>
+                <p class="text-slate-400 text-sm max-w-lg mx-auto font-light leading-relaxed">
+                    無論是商業攝影委託、展覽邀約或藝術作品典藏，歡迎直接與我們聯繫。
+                </p>
+
+                <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-medium">
+                    <a href="mailto:contact@echoesvisual.com" class="px-8 py-4 rounded-full bg-amber-600 hover:bg-amber-500 text-white tracking-widest uppercase transition-all shadow-lg flex items-center gap-2">
+                        <i data-lucide="mail" class="w-4 h-4"></i> contact@echoesvisual.com
+                    </a>
+                    <a href="#" class="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 text-white tracking-widest uppercase transition-all flex items-center gap-2">
+                        <i data-lucide="instagram" class="w-4 h-4 text-amber-400"></i> @echoes_art
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-studio-950 py-12 border-t border-white/5 text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-serif text-white font-medium">ECHOES</span>
+                <span>© 2026 All Rights Reserved.</span>
+            </div>
+            <div class="flex gap-6 uppercase tracking-wider text-[10px]">
+                <a href="#gallery" class="hover:text-slate-300">Works</a>
+                <a href="#exhibition" class="hover:text-slate-300">Exhibition</a>
+                <a href="#about" class="hover:text-slate-300">About</a>
+                <a href="#contact" class="hover:text-slate-300">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-studio-950/95 backdrop-blur-xl hidden flex-col transition-all duration-300 opacity-0">
+        <!-- Lightbox Top Control Bar -->
+        <div class="p-6 flex items-center justify-between text-slate-300 border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <span id="lb-counter" class="text-xs font-mono text-amber-400">01 / 09</span>
+                <span class="text-slate-600">|</span>
+                <span id="lb-category" class="text-xs uppercase tracking-widest font-medium">PORTRAIT</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="toggleFullscreenLightbox()" class="hover:text-amber-400 transition-colors p-2" title="Toggle Fullscreen">
+                    <i data-lucide="maximize-2" class="w-5 h-5"></i>
+                </button>
+                <button onclick="closeLightbox()" class="hover:text-amber-400 transition-colors p-2" title="Close (ESC)">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Lightbox Main Body -->
+        <div class="flex-1 relative flex items-center justify-center p-6 overflow-hidden">
+            <!-- Left Arrow -->
+            <button onclick="prevLightbox()" class="absolute left-6 z-20 p-4 rounded-full bg-white/5 hover:bg-white/15 text-white transition-all backdrop-blur-md">
+                <i data-lucide="chevron-left" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Image Container -->
+            <div class="relative max-w-5xl max-h-[80vh] flex items-center justify-center">
+                <img id="lb-img" src="" alt="Lightbox View" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl transition-all duration-500 scale-95" />
+            </div>
+
+            <!-- Right Arrow -->
+            <button onclick="nextLightbox()" class="absolute right-6 z-20 p-4 rounded-full bg-white/5 hover:bg-white/15 text-white transition-all backdrop-blur-md">
+                <i data-lucide="chevron-right" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Lightbox Bottom Details -->
+        <div class="p-6 border-t border-white/10 bg-studio-900/60 text-center space-y-1">
+            <h3 id="lb-title" class="font-serif text-xl text-white font-medium">Artwork Title</h3>
+            <p id="lb-desc" class="text-xs text-slate-400 max-w-xl mx-auto font-light">Artwork Description goes here.</p>
+        </div>
+    </div>
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="fixed inset-0 z-50 bg-studio-950/95 backdrop-blur-2xl hidden overflow-y-auto transition-opacity duration-300 opacity-0">
+        <div class="max-w-4xl mx-auto px-6 py-12 relative text-slate-200 space-y-8">
+            <button onclick="closeProjectDetail()" class="fixed top-8 right-8 z-50 p-3 rounded-full bg-white/10 text-white hover:bg-amber-600 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Modal Hero Image -->
+            <div class="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80" alt="Exhibition Detail Hero" class="w-full h-full object-cover" />
+            </div>
+
+            <!-- Title & Metadata -->
+            <div class="space-y-3 border-b border-white/10 pb-6">
+                <span class="text-xs font-mono text-amber-400 uppercase tracking-widest">Exhibition Case Study</span>
+                <h2 class="font-serif text-3xl sm:text-5xl text-white">《光之絮語》SOLITUDE & ECHOES</h2>
+                <div class="flex flex-wrap gap-6 text-xs text-slate-400 pt-2 font-mono">
+                    <span>DATE: 2026 MARCH - JUNE</span>
+                    <span>LOCATION: TAIPEI FINE ARTS MUSEUM</span>
+                    <span>CURATOR: ALEX CHEN</span>
+                </div>
+            </div>
+
+            <!-- Concept Narrative -->
+            <div class="space-y-4 text-slate-300 font-light text-sm sm:text-base leading-relaxed">
+                <h3 class="font-serif text-xl text-white font-medium">創作理念 / Creative Concept</h3>
+                <p>
+                    在這個被資訊碎片化的年代，我們逐漸失去凝視荒野與安靜聆聽的能力。這項展出費時三年，記錄高山與極北荒原中的極致純粹。
+                </p>
+                <p>
+                    所有作品均採用大片幅相機製作，保留光影在底片上的微小粒子與階調層次。
+                </p>
+            </div>
+
+            <!-- Additional Detail Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                <div class="aspect-[4/3] rounded-xl overflow-hidden border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Detail 1" class="w-full h-full object-cover" />
+                </div>
+                <div class="aspect-[4/3] rounded-xl overflow-hidden border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1511497584788-876761c11969?auto=format&fit=crop&w=800&q=80" alt="Detail 2" class="w-full h-full object-cover" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Artworks Data Array for Lightbox
+        const galleryItems = [
+            {
+                title: 'Shattered Identity / 凝視深淵',
+                category: 'PORTRAIT',
+                year: '2025',
+                desc: '捕捉都市個體在繁華喧囂中的孤寂光影與眼神對白。',
+                url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Whispering Valley / 靜謐山谷',
+                category: 'LANDSCAPE',
+                year: '2026',
+                desc: '高山晨霧中的自然氣息，記錄光線在稜線上的微妙推移。',
+                url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Neon Minimalist / 極簡霓虹',
+                category: 'COMMERCIAL',
+                year: '2025',
+                desc: '國際時裝品牌形象大片，結合幾何建築與前衛視覺色彩。',
+                url: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Midnight Solitude / 深夜街頭',
+                category: 'STREET',
+                year: '2026',
+                desc: '夜幕低垂下的城市角落，記錄過客在街燈下的偶然停頓。',
+                url: 'https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Ethereal Reflection / 虛實倒影',
+                category: 'PORTRAIT',
+                year: '2026',
+                desc: '利用玻璃折射與自然環境光，營造夢境般的人像層次。',
+                url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Mist & Pine / 霧松深林',
+                category: 'LANDSCAPE',
+                year: '2025',
+                desc: '走進冷溫帶高山針葉林，記錄水氣與樹幹間的水墨質感。',
+                url: 'https://images.unsplash.com/photo-1511497584788-876761c11969?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Urban Elegance / 都市典雅',
+                category: 'COMMERCIAL',
+                year: '2026',
+                desc: '秋冬高級高級訂製服宣傳輯，強調材質與流線美學。',
+                url: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Neon Horizon / 霓虹地平線',
+                category: 'STREET',
+                year: '2025',
+                desc: '雨後賽博朋克氛圍的都市巷弄，反射著五彩斑斕的光影。',
+                url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                title: 'Golden Hour Serenade / 黃昏小夜曲',
+                category: 'PORTRAIT',
+                year: '2026',
+                desc: '夕陽餘暉灑落於肌理上，凝固溫暖而柔和的當下情緒。',
+                url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80'
+            }
+        ];
+
+        let currentLightboxIndex = 0;
+
+        // Scroll Observer for Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+
+        // Mobile Navigation Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Category Filter Logic
+        function filterGallery(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white');
+                btn.classList.add('bg-white/5', 'text-slate-400');
+            });
+            event.target.classList.remove('bg-white/5', 'text-slate-400');
+            event.target.classList.add('bg-amber-600', 'text-white');
+
+            const cards = document.querySelectorAll('.gallery-card');
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'all' || cardCat === category) {
+                    card.classList.remove('filter-hide');
+                } else {
+                    card.classList.add('filter-hide');
+                }
+            });
+        }
+
+        // Lightbox Functions
+        function openLightbox(index) {
+            currentLightboxIndex = index;
+            const lb = document.getElementById('lightbox');
+            updateLightboxContent();
+            lb.classList.remove('hidden');
+            setTimeout(() => {
+                lb.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('opacity-0');
+            setTimeout(() => {
+                lb.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function updateLightboxContent() {
+            const item = galleryItems[currentLightboxIndex];
+            const img = document.getElementById('lb-img');
+            
+            img.classList.add('scale-95', 'opacity-50');
+            setTimeout(() => {
+                img.src = item.url;
+                document.getElementById('lb-counter').textContent = `${String(currentLightboxIndex + 1).padStart(2, '0')} / ${String(galleryItems.length).padStart(2, '0')}`;
+                document.getElementById('lb-category').textContent = `${item.category} / ${item.year}`;
+                document.getElementById('lb-title').textContent = item.title;
+                document.getElementById('lb-desc').textContent = item.desc;
+                img.classList.remove('scale-95', 'opacity-50');
+            }, 200);
+        }
+
+        function nextLightbox() {
+            currentLightboxIndex = (currentLightboxIndex + 1) % galleryItems.length;
+            updateLightboxContent();
+        }
+
+        function prevLightbox() {
+            currentLightboxIndex = (currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length;
+            updateLightboxContent();
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            const lb = document.getElementById('lightbox');
+            if (!lb.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextLightbox();
+                if (e.key === 'ArrowLeft') prevLightbox();
+            }
+        });
+
+        // Fullscreen Mode Handler
+        function toggleFullscreenMode() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => alert(`無法進入全螢幕模式: ${err.message}`));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        function toggleFullscreenLightbox() {
+            toggleFullscreenMode();
+        }
+
+        // Project Detail Modal Functions
+        function openProjectDetail() {
+            const modal = document.getElementById('project-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectDetail() {
+            const modal = document.getElementById('project-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
